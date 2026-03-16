@@ -8,26 +8,22 @@
         :root {
             --primary: #ff00ff;
             --bg: #0a0a0a;
-            --card: #000000;
-            --text: #ffffff;
-            --muted: #aaaaaa;
+            --card: #000;
+            --text: #fff;
             --wa: #25D366;
             --tg: #0088cc;
             --vk: #0077ff;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background: var(--bg);
-            background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
-            background-size: 20px 20px;
             color: var(--text);
-            margin: 0;
-            padding: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            margin: 0;
         }
 
         .builder-card {
@@ -36,17 +32,15 @@
             border-radius: 12px;
             width: 100%;
             max-width: 400px;
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.2);
             border: 2px solid var(--primary);
+            box-shadow: 0 0 20px rgba(255,0,255,0.2);
         }
 
         h2 {
             text-align: center;
             text-transform: uppercase;
             margin: 0;
-            letter-spacing: 1px;
             font-weight: 900;
-            font-size: 22px;
         }
 
         .sub-title {
@@ -54,13 +48,11 @@
             color: var(--primary);
             font-size: 12px;
             margin-bottom: 20px;
-            text-transform: uppercase;
-            font-weight: bold;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
         }
 
         .preview-box {
-            height: 120px;
+            height: 100px;
             background: #050505;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -72,35 +64,33 @@
         }
 
         .muffler-body {
-            background: linear-gradient(180deg, #444 0%, #111 50%, #000 100%);
+            background: linear-gradient(180deg, #444, #111, #000);
             border: 1px solid var(--primary);
             transition: 0.3s;
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
         }
 
         .pipe {
             position: absolute;
-            width: 35px;
-            height: 16px;
+            width: 30px;
+            height: 14px;
             background: #333;
             top: 50%;
             transform: translateY(-50%);
-            border: 1px solid #444;
         }
 
         .pipe-in {
-            left: 0px;
+            left: 0;
         }
 
         .pipe-out {
-            right: 0px;
+            right: 0;
         }
 
         .label-text {
             display: block;
-            margin: 12px 0 5px;
+            margin: 10px 0 5px;
             font-size: 10px;
-            color: var(--muted);
+            color: #aaa;
             text-transform: uppercase;
             font-weight: bold;
         }
@@ -108,14 +98,12 @@
         input, input[type="tel"], select {
             width: 100%;
             background: #111;
-            color: white;
+            color: #fff;
             border: 1px solid #333;
             padding: 12px;
             border-radius: 6px;
             box-sizing: border-box;
-            outline: none;
             margin-bottom: 5px;
-            font-size: 14px;
         }
 
             input[type="range"] {
@@ -133,14 +121,13 @@
                     background: var(--primary);
                     border-radius: 50%;
                     cursor: pointer;
-                    border: 2px solid #000;
                 }
 
         .price-tag {
             text-align: center;
-            margin: 20px 0;
+            margin: 15px 0;
             padding: 15px;
-            background: rgba(255, 0, 255, 0.05);
+            background: rgba(255,0,255,0.05);
             border: 1px dashed var(--primary);
         }
 
@@ -163,9 +150,9 @@
         }
 
         .btn {
-            padding: 14px 5px;
+            padding: 15px 5px;
             border: none;
-            color: white;
+            color: #fff;
             font-weight: 800;
             font-size: 11px;
             text-transform: uppercase;
@@ -176,7 +163,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: 0.2s;
         }
 
         .btn-wa {
@@ -194,7 +180,6 @@
 
         .btn:hover {
             filter: brightness(1.2);
-            transform: translateY(-1px);
         }
     </style>
 </head>
@@ -210,42 +195,37 @@
             <div class="pipe pipe-out"></div>
         </div>
 
-        <span class="label-text">Ваше Имя</span>
-        <input type="text" id="userName" placeholder="Имя" oninput="update()">
-
-        <span class="label-text">Ваш Телефон</span>
-        <input type="tel" id="userPhone" placeholder="+7..." oninput="update()">
+        <span class="label-text">Имя и Телефон</span>
+        <input type="text" id="userName" placeholder="Ваше имя">
+        <input type="tel" id="userPhone" placeholder="Ваш телефон">
 
         <span class="label-text">Тип изделия</span>
-        <select id="productSelect" onchange="resetAndStore()"></select>
+        <select id="productSelect" onchange="resetSlider()"></select>
 
         <span class="label-text" id="lengthLabel">Длина: 250 мм</span>
         <input type="range" id="lengthSlider" step="50" oninput="update()">
 
         <div class="price-tag">
-            <div style="font-size: 10px; color: var(--muted); margin-bottom: 5px;">ИТОГО К ОПЛАТЕ</div>
             <div class="price-value" id="priceDisplay">0 ₽</div>
         </div>
 
         <div class="buttons-grid">
             <div class="social-row">
-                <a href="#" target="_blank" class="btn btn-wa" id="waLink">WhatsApp</a>
-                <a href="#" target="_blank" class="btn btn-tg" id="tgLink">Telegram</a>
+                <button class="btn btn-wa" onclick="send('wa')">WhatsApp</button>
+                <button class="btn btn-tg" onclick="send('tg')">Telegram</button>
             </div>
-            <a href="#" target="_blank" class="btn btn-vk" id="vkLink">Написать ВКонтакте</a>
+            <button class="btn btn-vk" onclick="send('vk')">ВКонтакте</button>
         </div>
     </div>
 
     <script>
-        // Данные на основе вашего каталога
         const products = {
-            round170: { name: 'Круглый D170', baseP: 11300, minL: 200, maxL: 550, stepP: 700, h: 60, r: 30 },
-            round100: { name: 'Резонатор D100', baseP: 6300, minL: 200, maxL: 550, stepP: 700, h: 35, r: 17 },
-            ovalCC: { name: 'Овальный C-C (150х300)', baseP: 18100, minL: 250, maxL: 550, stepP: 700, h: 65, r: 15 },
-            oval0I: { name: 'Овальный 0-I (150х300)', baseP: 18100, minL: 250, maxL: 550, stepP: 700, h: 65, r: 15 },
-            ovalH: { name: 'Овальный H (150х300)', baseP: 25400, minL: 250, maxL: 550, stepP: 800, h: 70, r: 15 },
-            ovalU: { name: 'Овальный U (150х300)', baseP: 25700, minL: 250, maxL: 550, stepP: 800, h: 65, r: 15 },
-            ovalL: { name: 'Овальный L (150х300)', baseP: 28300, minL: 250, maxL: 550, stepP: 700, h: 65, r: 15 }
+            round170: { name: 'Круглый D170', baseP: 11300, minL: 200, maxL: 550, stepP: 700, h: 55, r: 27 },
+            round100: { name: 'Резонатор D100', baseP: 6300, minL: 200, maxL: 550, stepP: 700, h: 30, r: 15 },
+            ovalCC: { name: 'Овальный C-C', baseP: 18100, minL: 250, maxL: 550, stepP: 700, h: 60, r: 15 },
+            ovalH: { name: 'Овальный H', baseP: 25400, minL: 250, maxL: 550, stepP: 800, h: 65, r: 15 },
+            ovalU: { name: 'Овальный U', baseP: 25700, minL: 250, maxL: 550, stepP: 800, h: 60, r: 15 },
+            ovalL: { name: 'Овальный L', baseP: 28300, minL: 250, maxL: 550, stepP: 700, h: 60, r: 15 }
         };
 
         const select = document.getElementById('productSelect');
@@ -254,7 +234,6 @@
         const priceDisplay = document.getElementById('priceDisplay');
         const visual = document.getElementById('visualBody');
 
-        // Инициализация селекта
         for (let key in products) {
             let opt = document.createElement('option');
             opt.value = key;
@@ -262,42 +241,35 @@
             select.appendChild(opt);
         }
 
-        function resetAndStore() {
-            slider.value = products[select.value].minL;
-            update();
-        }
+        function resetSlider() { slider.value = products[select.value].minL; update(); }
 
         function update() {
             const p = products[select.value];
-            slider.min = p.minL;
-            slider.max = p.maxL;
-
+            slider.min = p.minL; slider.max = p.maxL;
             const val = parseInt(slider.value);
-            label.innerText = 'Длина корпуса: ' + val + ' мм';
-
+            label.innerText = `Длина корпуса: ${val} мм`;
             const extraSteps = (val - p.minL) / 50;
             const total = p.baseP + (extraSteps * p.stepP);
-            const formattedPrice = total.toLocaleString() + ' ₽';
-            priceDisplay.innerText = formattedPrice;
-
-            visual.style.width = (val * 0.45) + 'px';
+            priceDisplay.innerText = total.toLocaleString() + ' ₽';
+            visual.style.width = (val * 0.4) + 'px';
             visual.style.height = p.h + 'px';
             visual.style.borderRadius = p.r + 'px';
+        }
 
-            // Данные клиента
+        function send(type) {
+            const p = products[select.value];
             const name = document.getElementById('userName').value || "Не указано";
-            const phoneUser = document.getElementById('userPhone').value || "Не указан";
-
-            const msg = "ЗАКАЗ be Solve System:\n👤 Клиент: " + name + "\n📞 Тел: " + phoneUser + "\n🛠 Изделие: " + p.name + "\n📏 Длина: " + val + " мм\n💰 Цена: " + formattedPrice;
+            const phone = document.getElementById('userPhone').value || "Не указано";
+            const msg = `ЗАКАЗ be Solve System:\n👤 Клиент: ${name}\n📞 Тел: ${phone}\n🛠 Изделие: ${p.name}\n📏 Длина: ${slider.value} мм\n💰 Цена: ${priceDisplay.innerText}`;
             const encoded = encodeURIComponent(msg);
 
-            // ОБНОВЛЯЕМ ВСЕ ССЫЛКИ С ПЕРЕДАЧЕЙ ДАННЫХ
-            // WhatsApp
-            document.getElementById('waLink').href = "https://wa.me" + encoded;
-            // Telegram
-            document.getElementById('tgLink').href = "https://t.me" + encoded;
-            // ВКонтакте (используем /write для открытия окна сообщения)
-            document.getElementById('vkLink').href = "https://vk.com" + encoded;
+            let url = "";
+            if (type === 'wa') url = `https://wa.me/79221714919`;
+            if (type === 'tg') url = `https://t.me/be_solve_system`;
+            if (type === 'vk') url = `https://vk.com/write-227779041`;
+
+            // ИСПОЛЬЗУЕМ ПРЯМОЙ ПЕРЕХОД ДЛЯ ОБХОДА БЛОКИРОВКИ
+            window.location.href = url;
         }
 
         update();
