@@ -13,6 +13,7 @@
             --muted: #aaaaaa;
             --wa: #25D366;
             --tg: #0088cc;
+            --vk: #0077ff;
         }
 
         body {
@@ -22,9 +23,11 @@
             background-size: 20px 20px;
             color: var(--text);
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             display: flex;
             justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .builder-card {
@@ -43,16 +46,17 @@
             margin: 0;
             letter-spacing: 1px;
             font-weight: 900;
+            font-size: 22px;
         }
 
         .sub-title {
             text-align: center;
             color: var(--primary);
-            font-size: 13px;
+            font-size: 12px;
             margin-bottom: 20px;
             text-transform: uppercase;
             font-weight: bold;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
         }
 
         .preview-box {
@@ -111,6 +115,7 @@
             box-sizing: border-box;
             outline: none;
             margin-bottom: 5px;
+            font-size: 14px;
         }
 
             input[type="range"] {
@@ -146,13 +151,19 @@
         }
 
         .buttons-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .social-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn {
-            padding: 15px 5px;
+            padding: 14px 5px;
             border: none;
             color: white;
             font-weight: 800;
@@ -165,6 +176,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: 0.2s;
         }
 
         .btn-wa {
@@ -175,8 +187,14 @@
             background: var(--tg);
         }
 
+        .btn-vk {
+            background: var(--vk);
+            width: 100%;
+        }
+
         .btn:hover {
             filter: brightness(1.2);
+            transform: translateY(-1px);
         }
     </style>
 </head>
@@ -205,22 +223,29 @@
         <input type="range" id="lengthSlider" step="50" oninput="update()">
 
         <div class="price-tag">
-            <div style="font-size: 10px; color: var(--muted); margin-bottom: 5px;">ИТОГО</div>
+            <div style="font-size: 10px; color: var(--muted); margin-bottom: 5px;">ИТОГО К ОПЛАТЕ</div>
             <div class="price-value" id="priceDisplay">0 ₽</div>
         </div>
 
         <div class="buttons-grid">
-            <a href="#" target="_blank" class="btn btn-wa" id="waLink">WhatsApp</a>
-            <a href="#" target="_blank" class="btn btn-tg" id="tgLink">Telegram</a>
+            <div class="social-row">
+                <a href="#" target="_blank" class="btn btn-wa" id="waLink">WhatsApp</a>
+                <a href="#" target="_blank" class="btn btn-tg" id="tgLink">Telegram</a>
+            </div>
+            <a href="#" target="_blank" class="btn btn-vk" id="vkLink">Написать ВКонтакте</a>
         </div>
     </div>
 
     <script>
+        // Данные на основе вашего каталога
         const products = {
-            oval1: { name: 'Овальный 1х1', baseP: 18100, minL: 250, maxL: 600, h: 60, r: 15 },
-            oval2: { name: 'Овальный 2х2', baseP: 25400, minL: 250, maxL: 600, h: 65, r: 15 },
-            round170: { name: 'Круглый D170', baseP: 11300, minL: 200, maxL: 550, h: 55, r: 30 },
-            round100: { name: 'Круглый D100 (Резонатор)', baseP: 6300, minL: 200, maxL: 550, h: 35, r: 20 }
+            round170: { name: 'Круглый D170', baseP: 11300, minL: 200, maxL: 550, stepP: 700, h: 60, r: 30 },
+            round100: { name: 'Резонатор D100', baseP: 6300, minL: 200, maxL: 550, stepP: 700, h: 35, r: 17 },
+            ovalCC: { name: 'Овальный C-C (150х300)', baseP: 18100, minL: 250, maxL: 550, stepP: 700, h: 65, r: 15 },
+            oval0I: { name: 'Овальный 0-I (150х300)', baseP: 18100, minL: 250, maxL: 550, stepP: 700, h: 65, r: 15 },
+            ovalH: { name: 'Овальный H (150х300)', baseP: 25400, minL: 250, maxL: 550, stepP: 800, h: 70, r: 15 },
+            ovalU: { name: 'Овальный U (150х300)', baseP: 25700, minL: 250, maxL: 550, stepP: 800, h: 65, r: 15 },
+            ovalL: { name: 'Овальный L (150х300)', baseP: 28300, minL: 250, maxL: 550, stepP: 700, h: 65, r: 15 }
         };
 
         const select = document.getElementById('productSelect');
@@ -229,9 +254,7 @@
         const priceDisplay = document.getElementById('priceDisplay');
         const visual = document.getElementById('visualBody');
 
-        const myPhone = "79221714919";
-        const myTg = "be_solve_system";
-
+        // Инициализация селекта
         for (let key in products) {
             let opt = document.createElement('option');
             opt.value = key;
@@ -253,7 +276,7 @@
             label.innerText = 'Длина корпуса: ' + val + ' мм';
 
             const extraSteps = (val - p.minL) / 50;
-            const total = p.baseP + (extraSteps * 700);
+            const total = p.baseP + (extraSteps * p.stepP);
             const formattedPrice = total.toLocaleString() + ' ₽';
             priceDisplay.innerText = formattedPrice;
 
@@ -261,16 +284,20 @@
             visual.style.height = p.h + 'px';
             visual.style.borderRadius = p.r + 'px';
 
-            // Собираем данные
+            // Данные клиента
             const name = document.getElementById('userName').value || "Не указано";
             const phoneUser = document.getElementById('userPhone').value || "Не указан";
 
             const msg = "ЗАКАЗ be Solve System:\n👤 Клиент: " + name + "\n📞 Тел: " + phoneUser + "\n🛠 Изделие: " + p.name + "\n📏 Длина: " + val + " мм\n💰 Цена: " + formattedPrice;
             const encoded = encodeURIComponent(msg);
 
-            // Обновляем ссылки ПРЯМО В ТЕГАХ <a>
-            document.getElementById('waLink').href = "https://api.whatsapp.com" + myPhone + "&text=" + encoded;
-            document.getElementById('tgLink').href = "https://t.me/" + myTg + "?text=" + encoded;
+            // ОБНОВЛЯЕМ ВСЕ ССЫЛКИ С ПЕРЕДАЧЕЙ ДАННЫХ
+            // WhatsApp
+            document.getElementById('waLink').href = "https://wa.me" + encoded;
+            // Telegram
+            document.getElementById('tgLink').href = "https://t.me" + encoded;
+            // ВКонтакте (используем /write для открытия окна сообщения)
+            document.getElementById('vkLink').href = "https://vk.com" + encoded;
         }
 
         update();
