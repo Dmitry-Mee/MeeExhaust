@@ -3,79 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>be Solve System - Конструктор</title>
+    <title>be Solve System — Premium Exhaust Builder</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
             --primary: #ff00ff;
-            --bg: #0a0a0a;
-            --card: #000;
-            --text: #fff;
-            --wa: #25D366;
-            --tg: #0088cc;
-            --vk: #0077ff;
+            --primary-glow: rgba(255, 0, 255, 0.4);
+            --bg: #050505;
+            --card-bg: rgba(20, 20, 20, 0.8);
+            --text: #ffffff;
+            --accent-gray: #a0a0a0;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--bg);
             color: var(--text);
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
+            overflow-x: hidden;
         }
 
+            /* Анимированный фон */
+            body::before {
+                content: "";
+                position: fixed;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+                z-index: -1;
+            }
+
         .builder-card {
-            background: var(--card);
-            padding: 25px;
-            border-radius: 12px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 30px;
             width: 100%;
-            max-width: 400px;
-            border: 2px solid var(--primary);
-            box-shadow: 0 0 20px rgba(255,0,255,0.2);
+            max-width: 440px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 30px rgba(255, 0, 255, 0.05);
+            position: relative;
         }
 
         h2 {
             text-align: center;
-            text-transform: uppercase;
-            margin: 0;
             font-weight: 900;
+            font-size: 32px;
+            margin: 0;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .sub-title {
             text-align: center;
-            color: var(--primary);
+            color: var(--accent-gray);
             font-size: 12px;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 35px;
+            font-weight: 400;
         }
 
+        /* Превью выхлопа */
         .preview-box {
-            height: 100px;
-            background: #050505;
-            border-radius: 8px;
-            margin-bottom: 20px;
+            height: 160px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            border: 1px solid #222;
+            overflow: hidden;
+            border: 1px inset rgba(255,255,255,0.05);
         }
 
         .muffler-body {
-            background: linear-gradient(180deg, #444, #111, #000);
-            border: 1px solid var(--primary);
-            transition: 0.3s;
+            background: linear-gradient(180deg, #444, #111, #222);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 40px var(--primary-glow);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
         }
 
         .pipe {
             position: absolute;
-            width: 30px;
-            height: 14px;
-            background: #333;
-            top: 50%;
-            transform: translateY(-50%);
+            width: 50px;
+            height: 20px;
+            background: linear-gradient(180deg, #333, #000);
+            border-radius: 4px;
         }
 
         .pipe-in {
@@ -86,100 +115,110 @@
             right: 0;
         }
 
+        /* Элементы управления */
+        .control-group {
+            margin-bottom: 25px;
+        }
+
         .label-text {
             display: block;
-            margin: 10px 0 5px;
-            font-size: 10px;
-            color: #aaa;
+            margin-bottom: 10px;
+            font-size: 11px;
+            color: var(--accent-gray);
             text-transform: uppercase;
-            font-weight: bold;
+            letter-spacing: 1.5px;
         }
 
-        input, input[type="tel"], select {
+        select {
             width: 100%;
-            background: #111;
+            background: #151515;
             color: #fff;
             border: 1px solid #333;
-            padding: 12px;
-            border-radius: 6px;
-            box-sizing: border-box;
-            margin-bottom: 5px;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
-            input[type="range"] {
-                width: 100%;
-                height: 6px;
-                appearance: none;
-                background: #222;
-                margin: 15px 0;
+            select:focus {
+                border-color: var(--primary);
             }
 
-                input[type="range"]::-webkit-slider-thumb {
-                    appearance: none;
-                    width: 20px;
-                    height: 20px;
-                    background: var(--primary);
-                    border-radius: 50%;
-                    cursor: pointer;
-                }
+        /* Ползунок */
+        input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            background: transparent;
+        }
 
+            input[type="range"]::-webkit-slider-runnable-track {
+                width: 100%;
+                height: 6px;
+                background: #222;
+                border-radius: 3px;
+            }
+
+            input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                height: 22px;
+                width: 22px;
+                border-radius: 50%;
+                background: #fff;
+                box-shadow: 0 0 15px var(--primary);
+                margin-top: -8px;
+                cursor: pointer;
+                border: 4px solid var(--primary);
+            }
+
+        /* Цена */
         .price-tag {
             text-align: center;
-            margin: 15px 0;
-            padding: 15px;
-            background: rgba(255,0,255,0.05);
-            border: 1px dashed var(--primary);
+            margin: 30px 0;
         }
 
         .price-value {
-            font-size: 28px;
+            font-size: 42px;
             font-weight: 900;
-            color: var(--primary);
+            color: #fff;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
+        /* Кнопки */
         .buttons-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .social-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 12px;
         }
 
         .btn {
-            padding: 15px 5px;
-            border: none;
-            color: #fff;
-            font-weight: 800;
-            font-size: 11px;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 13px;
             text-transform: uppercase;
-            cursor: pointer;
-            border-radius: 6px;
-            text-align: center;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            text-align: center;
+            transition: 0.3s;
         }
 
-        .btn-wa {
-            background: var(--wa);
+        .btn-main {
+            grid-column: span 2;
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 10px 20px var(--primary-glow);
         }
 
-        .btn-tg {
-            background: var(--tg);
-        }
-
-        .btn-vk {
-            background: var(--vk);
-            width: 100%;
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .btn:hover {
-            filter: brightness(1.2);
+            transform: translateY(-3px);
+            filter: brightness(1.1);
         }
     </style>
 </head>
@@ -187,7 +226,7 @@
 
     <div class="builder-card">
         <h2>be Solve System</h2>
-        <div class="sub-title">Exhaust Constructor</div>
+        <div class="sub-title">Custom Exhaust Lab</div>
 
         <div class="preview-box">
             <div class="pipe pipe-in"></div>
@@ -195,37 +234,43 @@
             <div class="pipe pipe-out"></div>
         </div>
 
-        <span class="label-text">Имя и Телефон</span>
-        <input type="text" id="userName" placeholder="Ваше имя">
-        <input type="tel" id="userPhone" placeholder="Ваш телефон">
+        <div class="control-group">
+            <span class="label-text">Конфигурация</span>
+            <select id="productSelect" onchange="resetSlider()"></select>
+        </div>
 
-        <span class="label-text">Тип изделия</span>
-        <select id="productSelect" onchange="resetSlider()"></select>
-
-        <span class="label-text" id="lengthLabel">Длина: 250 мм</span>
-        <input type="range" id="lengthSlider" step="50" oninput="update()">
+        <div class="control-group">
+            <div style="display:flex; justify-content: space-between; align-items: baseline;">
+                <span class="label-text">Длина корпуса</span>
+                <span id="lengthLabel" style="font-weight: 700; color: var(--primary);">250 мм</span>
+            </div>
+            <input type="range" id="lengthSlider" step="50" oninput="update()">
+        </div>
 
         <div class="price-tag">
             <div class="price-value" id="priceDisplay">0 ₽</div>
         </div>
 
         <div class="buttons-grid">
-            <div class="social-row">
-                <button class="btn btn-wa" onclick="send('wa')">WhatsApp</button>
-                <button class="btn btn-tg" onclick="send('tg')">Telegram</button>
-            </div>
-            <button class="btn btn-vk" onclick="send('vk')">ВКонтакте</button>
+            <!-- Кнопка вызова -->
+            <a href="tel:+79221714919" class="btn btn-main">Заказать расчет по телефону</a>
+
+            <!-- Ссылки на мессенджеры и ВК -->
+            <a href="https://t.me/be_solve_system" target="_blank" class="btn btn-secondary">Telegram</a>
+            <a href="https://wa.me/79221714919" target="_blank" class="btn btn-secondary">WhatsApp</a>
+            <a href="https://vk.com/write-227779041" target="_blank" class="btn btn-secondary" style="grid-column: span 2;">Написать ВКонтакте</a>
         </div>
+
     </div>
 
     <script>
         const products = {
-            round170: { name: 'Круглый D170', baseP: 11300, minL: 200, maxL: 550, stepP: 700, h: 55, r: 27 },
-            round100: { name: 'Резонатор D100', baseP: 6300, minL: 200, maxL: 550, stepP: 700, h: 30, r: 15 },
+            round170: { name: 'Круглый D170', baseP: 11300, minL: 200, maxL: 550, stepP: 700, h: 65, r: 32 },
+            round100: { name: 'Резонатор D100', baseP: 6300, minL: 200, maxL: 550, stepP: 700, h: 40, r: 20 },
             ovalCC: { name: 'Овальный C-C', baseP: 18100, minL: 250, maxL: 550, stepP: 700, h: 60, r: 15 },
-            ovalH: { name: 'Овальный H', baseP: 25400, minL: 250, maxL: 550, stepP: 800, h: 65, r: 15 },
-            ovalU: { name: 'Овальный U', baseP: 25700, minL: 250, maxL: 550, stepP: 800, h: 60, r: 15 },
-            ovalL: { name: 'Овальный L', baseP: 28300, minL: 250, maxL: 550, stepP: 700, h: 60, r: 15 }
+            ovalH: { name: 'Овальный H', baseP: 25400, minL: 250, maxL: 550, stepP: 800, h: 70, r: 15 },
+            ovalU: { name: 'Овальный U', baseP: 25700, minL: 250, maxL: 550, stepP: 800, h: 65, r: 15 },
+            ovalL: { name: 'Овальный L', baseP: 28300, minL: 250, maxL: 550, stepP: 700, h: 65, r: 15 }
         };
 
         const select = document.getElementById('productSelect');
@@ -241,38 +286,28 @@
             select.appendChild(opt);
         }
 
-        function resetSlider() { slider.value = products[select.value].minL; update(); }
+        function resetSlider() {
+            slider.value = products[select.value].minL;
+            update();
+        }
 
         function update() {
             const p = products[select.value];
-            slider.min = p.minL; slider.max = p.maxL;
+            slider.min = p.minL;
+            slider.max = p.maxL;
             const val = parseInt(slider.value);
-            label.innerText = `Длина корпуса: ${val} мм`;
+            label.innerText = `${val} мм`;
+
             const extraSteps = (val - p.minL) / 50;
             const total = p.baseP + (extraSteps * p.stepP);
+
             priceDisplay.innerText = total.toLocaleString() + ' ₽';
             visual.style.width = (val * 0.4) + 'px';
             visual.style.height = p.h + 'px';
             visual.style.borderRadius = p.r + 'px';
         }
 
-        function send(type) {
-            const p = products[select.value];
-            const name = document.getElementById('userName').value || "Не указано";
-            const phone = document.getElementById('userPhone').value || "Не указано";
-            const msg = `ЗАКАЗ be Solve System:\n👤 Клиент: ${name}\n📞 Тел: ${phone}\n🛠 Изделие: ${p.name}\n📏 Длина: ${slider.value} мм\n💰 Цена: ${priceDisplay.innerText}`;
-            const encoded = encodeURIComponent(msg);
-
-            let url = "";
-            if (type === 'wa') url = `https://wa.me/79221714919`;
-            if (type === 'tg') url = `https://t.me/be_solve_system`;
-            if (type === 'vk') url = `https://vk.com/write-227779041`;
-
-            // ИСПОЛЬЗУЕМ ПРЯМОЙ ПЕРЕХОД ДЛЯ ОБХОДА БЛОКИРОВКИ
-            window.location.href = url;
-        }
-
-        update();
+        resetSlider();
     </script>
 </body>
 </html>
